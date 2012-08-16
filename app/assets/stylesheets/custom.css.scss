@@ -4,6 +4,12 @@
 
 $grayMediumLight: #eaeaea;
 
+@mixin box_sizing {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 
 /* universal */
 
@@ -107,4 +113,73 @@ footer {
       margin-left: 10px;
     }
   }
+}
+
+
+/* sidebar */
+
+aside {
+  section {
+    border-top: 1px solid $grayLighter;
+    padding: 10px 0px;
+    
+    &:first-child {
+      border: 0px;
+      padding-top: 0px;
+    }
+    
+    span {
+      display: block;
+      margin-bottom: 3px;
+      line-height: 1;
+    }
+    
+    h1 {
+      font-size: 1.6em;
+      letter-spacing: -1px;
+      margin-bottom: 3px;
+      text-align: left;
+    }
+  }  
+}
+
+.gravatar {
+  float: left;
+  margin-right: 10px;
+}
+
+
+/* forms */
+
+input, textarea, select, .uneditable-input {
+  border: 1px solid #bbb;
+  height: auto;
+  margin-bottom: 15px;
+  padding: 10px;
+  width: 100%;
+  @include box_sizing;
+}
+
+#error_explanation {
+  color: #f00;
+  ul {
+    list-style: none;
+    margin: 0px 0px 18px 0px;
+  }
+}
+
+.field_with_errors {
+  @extend .control-group;
+  @extend .error;
+}
+
+
+/* miscellaneous */
+
+.debug_dump {
+  clear: both;
+  float: left;
+  margin-top: 45px;
+  width: 100%;
+  @include box_sizing;
 }
