@@ -8,6 +8,11 @@ describe "Authentication" do
     
     it { should have_selector('h1',    text: 'Sign in') }
     it { should have_selector('title', text: 'Sign in') }
+    
+    it { should_not have_link("Users") }
+    it { should_not have_link("Profile") }
+    it { should_not have_link("Settings") }
+    it { should_not have_link("Sign out") }
   end
   
   describe "signin" do
@@ -44,6 +49,18 @@ describe "Authentication" do
         
         it { should have_link('Sign in') }
       end
+      
+      describe "followed by sign up" do
+        before { visit signup_path }
+        
+        it { should have_selector('title', text: 'Sample App') }
+      end
+      
+      describe "followed by create user" do
+        before { post signup_path }
+        
+        it { should have_selector('title', text: 'Sample App') }
+      end
     end
   end
   
@@ -62,6 +79,16 @@ describe "Authentication" do
         describe "after signing in" do
           it "should render the desired protected page" do
             page.should have_selector('title', text: 'Edit user')
+          end
+          
+          describe "when signing in again" do
+            before do
+              sign_in(user)
+            end
+            
+            it "should render the default (profile) page" do
+              page.should have_selector('title', text: user.name)
+            end
           end
         end
       end

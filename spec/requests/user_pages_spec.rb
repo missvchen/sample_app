@@ -70,7 +70,7 @@ describe "UserPages" do
       end
       
       describe "after submission" do
-        before {click_button submit }
+        before { click_button submit }
         
         it { should have_selector('h1', text: 'Sign up') }
         it { should have_content('error' )}
@@ -82,7 +82,7 @@ describe "UserPages" do
         fill_in "Name",         with: "Example User"
         fill_in "Email",        with: "user@example.com"
         fill_in "Password",     with: "foobar"
-        fill_in "Confirmation", with: "foobar"        
+        fill_in "Confirm Password", with: "foobar"        
       end
       
       it "should create a user" do
