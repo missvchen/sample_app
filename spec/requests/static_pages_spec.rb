@@ -17,18 +17,58 @@ describe "StaticPages" do
 		it { should_not have_selector('title', text: ' | Home') }
 		
 		describe "for signed-in users" do
-		  let(:user) { FactoryGirl.create(:user) }
-		  before do
-		    FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
-		    FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
-		    sign_in user
-		    visit root_path
+	    let(:user) { FactoryGirl.create(:user) }
+		  
+		  describe "with 0 microposts" do
+		    before do
+  		    sign_in user
+  		    visit root_path
+		    end
+		    
+		    it { should have_content('0 microposts') }
 		  end
 		  
-		  it "should render the user's feed" do
-		    user.feed.each do |item|
-		      page.should have_selector("li##{item.id}", text: item.content)
-		    end
+		  describe "with 1 micropost" do
+        before do
+          FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+          sign_in user
+          visit root_path
+        end
+        
+        it { should have_content('1 micropost') }
+		  end
+		  
+		  describe "with more than 1 micropost" do
+  		  before do
+  		    FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+  		    FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+  		    sign_in user
+  		    visit root_path
+  		  end
+  		  
+  		  it { should have_content('2 microposts') }
+  		  
+  		  it "should render the user's feed" do
+  		    user.feed.each do |item|
+  		      page.should have_selector("li##{item.id}", text: item.content)
+  		      
+  		      if item.user.id == user.id
+  		        page.should have_link('delete', href: micropost_path(item.id))
+  		        expect { click_link('delete') }.to change(Micropost, :count).by(-1)
+  		      else
+  		        page.should_not have_link('delete', href: micropost_path(item.id))
+  		      end
+  		    end
+  		  end
+  		  
+  		  describe "pagination" do
+  		    before do
+  		      30.times { FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum") }
+  		      visit root_path
+  		    end
+  		    
+  		    it { should have_selector('div.pagination') }
+  		  end
 		  end
 		end
 	end
