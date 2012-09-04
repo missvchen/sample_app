@@ -148,6 +148,35 @@ aside {
   margin-right: 10px;
 }
 
+.user_avatars {
+  overflow: auto;
+  margin-top: 10px;
+  .gravatar {
+    margin: 1px;
+  }
+}
+
+.stats {
+  overflow: auto;
+  a {
+    border-left: 1px solid $grayLighter;
+    color: gray;
+    float: left;
+    padding: 0px 10px;
+    &:first-child {
+      border: 0;
+      padding-left: 0;
+    }
+    &:hover {
+      color: blue;
+      text-decoration: none;
+    }
+  }
+  strong {
+    display: block;
+  }
+}
+
 
 /* forms */
 
